@@ -43,6 +43,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['email','name','last_name']
 
     def __str__(self):
-        #Retorno modificado para nombre y apellido
         return f'{self.name} {self.last_name}'
-
