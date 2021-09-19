@@ -2,7 +2,7 @@ from os import stat
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
-from apps.users.api.serializer import UserSerializer
+from apps.users.api.serializer import TestUserSerializer, UserSerializer
 from apps.users.models import User
 #Con decorador
 from rest_framework.decorators import api_view
@@ -60,3 +60,18 @@ def user_detail_api_view(request, key=None):
             user.delete()
             return Response({'message':'Eliminado'}, status=status.HTTP_200_OK)
     return Response({'message':'No se ha encontrado el usuario'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def user_test_validate(request):
+    if request.method =='GET':
+        user = User.objects.all()
+        user_serializers= UserSerializer(user, many=True)
+
+        test_data={
+            'name':'develops',
+            'email':'prueba@gmail.com'
+                }
+        test_user = TestUserSerializer(data = test_data)
+        if test_user.is_valid():
+            print("Validaciones correctamente")
+        return Response(user_serializers.data, status=status.HTTP_200_OK)
